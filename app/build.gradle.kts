@@ -9,7 +9,7 @@ plugins {
 
 android {
     namespace = "com.example.abl"
-    compileSdk = 33
+    compileSdk = 34
 
     buildFeatures {
         dataBinding = true
