@@ -5,5 +5,10 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.AndroidBaseballLeague" parent="Base.Theme.AndroidBaseballLeague" />
+    <style name="Theme.AndroidBaseballLeague" parent="Base.Theme.AndroidBaseballLeague">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:windowTranslucentStatus">true</item>
+    </style>
+
+
 </resources>
