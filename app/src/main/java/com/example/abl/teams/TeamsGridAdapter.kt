@@ -34,19 +34,16 @@ class TeamsGridAdapter(
 
     override fun getItemCount(): Int = teams.size
 
-    inner class TeamViewHolder(
-        private val binding: TeamsGridItemBinding
-    ) : RecyclerView.ViewHolder(binding.root) {
+    inner class TeamViewHolder(private val binding: TeamsGridItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
 
         fun bind(item: UITeam) {
             binding.apply {
                 team = item
 
                 setClickListener { view ->
-                    val action = NavGraphDirections.actionGoToTeam(
-                        item.teamId,
-                        item.teamName)
-
+                    val action = NavGraphDirections
+                        .actionGoToTeam(item.teamId, item.teamName)
                     view.findNavController().navigate(action)
                 }
             }

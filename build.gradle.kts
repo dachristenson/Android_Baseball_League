@@ -6,13 +6,9 @@ plugins {
 }
 
 buildscript {
-//    ext {
         val kotlin_version = "1.9.0"
-        val gradle_version = "8.1"
+        val gradle_version = "8.1.2"
         val nav_version = "2.7.4"
-  //  }
-
-
 
     dependencies {
         classpath("com.android.tools.build:gradle:$gradle_version")
