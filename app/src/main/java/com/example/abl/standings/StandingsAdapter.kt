@@ -1,10 +1,13 @@
 package com.example.abl.standings
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.abl.NavGraphDirections
 import com.example.abl.databinding.StandingsHeaderBinding
 import com.example.abl.databinding.StandingsTeamItemBinding
 import kotlinx.coroutines.CoroutineScope
@@ -65,14 +68,14 @@ class StandingsAdapter :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(standingsTeamItem: StandingsListItem.TeamItem) {
             binding.uiTeamStanding = standingsTeamItem.uiTeamStanding
-            //TODO: Uncomment this code when you're ready.
-            /*binding.clickListener = View.OnClickListener { view ->
+
+            binding.clickListener = View.OnClickListener { view ->
                 val action = NavGraphDirections.actionGoToTeam(
                     standingsTeamItem.uiTeamStanding.teamId,
                     standingsTeamItem.uiTeamStanding.teamName
                 )
                 view.findNavController().navigate(action)
-            }*/
+            }
         }
 
         companion object {

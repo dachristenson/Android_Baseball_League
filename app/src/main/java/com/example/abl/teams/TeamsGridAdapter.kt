@@ -3,7 +3,9 @@ package com.example.abl.teams
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.example.abl.NavGraphDirections
 import com.example.abl.R
 import com.example.abl.databinding.TeamsGridItemBinding
 
@@ -35,10 +37,18 @@ class TeamsGridAdapter(
     inner class TeamViewHolder(
         private val binding: TeamsGridItemBinding
     ) : RecyclerView.ViewHolder(binding.root) {
+
         fun bind(item: UITeam) {
             binding.apply {
                 team = item
-                executePendingBindings()
+
+                setClickListener { view ->
+                    val action = NavGraphDirections.actionGoToTeam(
+                        item.teamId,
+                        item.teamName)
+
+                    view.findNavController().navigate(action)
+                }
             }
         }
     }
