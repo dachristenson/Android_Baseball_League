@@ -41,7 +41,12 @@ class TeamsGridAdapter(
             binding.apply {
                 team = item
 
-                setClickListener { view ->
+                // I replaced "setClickListener {}" with "root.setOnClickListener {}",
+                // as suggested by Michael Fazio via DevTalk.  Using the provided
+                // code with "setClickListener {}" would not build, and adding the
+                // function import suggested by Android Studio just threw parameter
+                // errors.  The body within the braces remains unchanged.
+                root.setOnClickListener { view ->
                     val action = NavGraphDirections
                         .actionGoToTeam(item.teamId, item.teamName)
                     view.findNavController().navigate(action)
