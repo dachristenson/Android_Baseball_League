@@ -1,16 +1,33 @@
 package com.example.abl.standings
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import android.app.Application
+import androidx.lifecycle.*
+import com.example.abl.data.BaseballDatabase
+import com.example.abl.data.BaseballRepository
 
-class StandingsViewModel: ViewModel() {
-    val standings: LiveData<List<UITeamStanding>> = MutableLiveData(
-        TeamStanding.mockTeamStandings.mapNotNull { teamStanding ->
-            UITeamStanding.fromTeamIdAndStandings(
-                teamStanding.teamId,
-                TeamStanding.mockTeamStandings
-            )
-        }
-    )
+class StandingsViewModel(application: Application):
+    AndroidViewModel(application) {
+
+    private val repo: BaseballRepository
+
+    val standings: LiveData<List<UITeamStanding>>
+
+    init {
+        repo = BaseballDatabase
+            .getDatabase(application, viewModelScope)
+            .baseballDao()
+            .let { dao ->
+                BaseballRepository.getInstance(dao)
+            }
+
+        standings =
+            repo.getStandings().map { teamStandings ->
+                teamStandings.mapNotNull { teamStanding ->
+                    UITeamStanding.fromTeamIdAndStandings(
+                        teamStanding.teamId,
+                        teamStandings
+                    )
+                }
+            }
+    }
 }
