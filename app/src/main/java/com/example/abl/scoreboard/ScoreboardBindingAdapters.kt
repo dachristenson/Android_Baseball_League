@@ -1,5 +1,5 @@
 package com.example.abl.scoreboard
-
+/*
 import android.media.Image
 import android.view.View
 import android.widget.ImageView
@@ -17,4 +17,4 @@ fun bindIsOccupied(imageView: ImageView, isOccupied: Boolean) {
 @BindingAdapter("isVisible")
 fun bindIsVisible(view: View, isVisible: Boolean) {
     view.visibility = if(isVisible) View.VISIBLE else View.GONE
-}
+}*/

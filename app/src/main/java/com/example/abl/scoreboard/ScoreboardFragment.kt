@@ -1,5 +1,5 @@
 package com.example.abl.scoreboard
-
+/*
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -43,4 +43,4 @@ class ScoreboardFragment : Fragment() {
 
         return binding.root
     }
-}
+}*/

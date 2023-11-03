@@ -1,5 +1,5 @@
 package com.example.abl.scoreboard
-
+/*
 import android.app.Application
 import androidx.lifecycle.*
 import com.example.abl.data.BaseballDatabase
@@ -63,4 +63,4 @@ class ScoreboardViewModel(application: Application) : AndroidViewModel(applicati
             }
         }
     }
-}
+}*/
