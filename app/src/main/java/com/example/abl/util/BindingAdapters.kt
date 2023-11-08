@@ -1,4 +1,4 @@
-package com.example.abl.utils
+package com.example.abl.util
 
 import android.view.View
 import android.widget.ImageView

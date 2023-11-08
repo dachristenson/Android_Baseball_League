@@ -5,7 +5,7 @@ import androidx.lifecycle.*
 import com.example.abl.data.BaseballDatabase
 import com.example.abl.data.BaseballRepository
 import com.example.abl.teams.UITeam
-import com.example.abl.utils.getErrorMessage
+import com.example.abl.util.getErrorMessage
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

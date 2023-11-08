@@ -14,7 +14,8 @@ class StandingsFragment : Fragment() {
     private val standingsViewModel by activityViewModels<StandingsViewModel>()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_standings, container, false)
@@ -28,6 +29,8 @@ class StandingsFragment : Fragment() {
         standingsViewModel.standings.observe(viewLifecycleOwner) { standings ->
             standingsAdapter.addHeadersAndBuildStandings(standings)
         }
+
+        standingsViewModel.refreshStandings()
 
         return view
     }
