@@ -3,6 +3,8 @@ val app_compat_version = "1.6.1"
 val nav_version = "2.7.5"
 val room_version = "2.6.0"
 val material_version = "1.10.0"
+val retrofit_version = "2.9.0"
+val abl_client_version = "1.1.1"
 
 plugins {
     id("com.android.application")
@@ -62,6 +64,8 @@ dependencies {
     implementation("androidx.room:room-runtime:$room_version")
     implementation("com.google.android.material:material:$material_version")
     implementation("androidx.room:room-common:$room_version")
+    implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
+    implementation("dev.mfazio:abl-api-client:$abl_client_version")
     kapt("androidx.room:room-compiler:$room_version")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

@@ -6,9 +6,16 @@ plugins {
 }
 
 buildscript {
-        val kotlin_version = "1.9.0"
-        val gradle_version = "8.1.2"
-        val nav_version = "2.7.4"
+    val kotlin_version = "1.9.0"
+    val gradle_version = "8.1.2"
+    val nav_version = "2.7.4"
+
+    /*
+    repositories {
+        jcenter()
+        maven { url = uri("https://jitpack.io") }
+    }
+    */
 
     dependencies {
         classpath("com.android.tools.build:gradle:$gradle_version")
@@ -19,3 +26,11 @@ buildscript {
         // in the individual module build.gradle files
     }
 }
+
+/*
+allprojects {
+    repositories {
+        jcenter()
+        maven { url = uri("https://jitpack.io") }
+    }
+}*/
