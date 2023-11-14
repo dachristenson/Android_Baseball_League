@@ -66,6 +66,7 @@ dependencies {
     implementation("androidx.room:room-common:$room_version")
     implementation("com.squareup.retrofit2:retrofit:$retrofit_version")
     implementation("dev.mfazio:abl-api-client:$abl_client_version")
+    implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     kapt("androidx.room:room-compiler:$room_version")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

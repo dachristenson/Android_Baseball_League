@@ -7,14 +7,20 @@
  ! We make no guarantees that this code is fit for any purpose.
  ! Visit https://pragprog.com/titles/mfjetpack for more book information.
 -->
-<androidx.recyclerview.widget.RecyclerView
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/standingsList"
+    android:id="@+id/standingsSwipeRefreshLayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:layout_gravity="center"
-    app:layoutManager="LinearLayoutManager"
-    tools:context=".standings.StandingsFragment"
-    tools:listitem="@layout/standings_team_item" />
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/standingsList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        app:layoutManager="LinearLayoutManager"
+        tools:context=".standings.StandingsFragment"
+        tools:listitem="@layout/standings_team_item" />
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
