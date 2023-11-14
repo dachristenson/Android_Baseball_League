@@ -2,24 +2,32 @@ package com.example.abl.data
 
 import androidx.lifecycle.LiveData
 import com.example.abl.standings.TeamStanding
-import com.example.abl.util.*
+import com.example.abl.util.convertToTeamStandings
 import dev.mfazio.abl.api.services.getDefaultABLService
+import java.io.IOException
 
 class BaseballRepository(private val baseballDao: BaseballDao) {
     fun getStandings(): LiveData<List<TeamStanding>> =
         baseballDao.getStandings()
 
-    suspend fun updateStandings() {
-        val standingsResult = apiService.getStandings()
+    suspend fun updateStandings(): ResultStatus {
+        val standingsResult = safeApiRequest {
+            apiService.getStandings()
+        }
 
-        // Note:  p. 247 used "standings" rather than "standingsResult" below,
-        // but this didn't seem to reference anything in the provided code.
-        if(standingsResult.any()) {
+        return if (
+            standingsResult.success &&
+            standingsResult.result?.any() == true
+        ) {
             baseballDao.updateStandings(
-                standingsResult.convertToTeamStandings(
+                standingsResult.result.convertToTeamStandings(
                     baseballDao.getCurrentStandings()
                 )
             )
+
+            ResultStatus.Success
+        } else {
+            standingsResult.status
         }
     }
 
@@ -30,6 +38,27 @@ class BaseballRepository(private val baseballDao: BaseballDao) {
         RequestException,
         GeneralException
     }
+
+    inner class ApiResult<T> (
+        val result: T? = null,
+        val status: ResultStatus = ResultStatus.Unknown
+    ) {
+        val success = status == ResultStatus.Success
+    }
+
+    private suspend fun <T> safeApiRequest(
+        apiFunction: suspend () -> T
+    ): ApiResult<T> =
+        try {
+            val result = apiFunction()
+            ApiResult(result, ResultStatus.Success)
+        } catch (ex: retrofit2.HttpException) {
+            ApiResult(status = ResultStatus.RequestException)
+        } catch (ex: IOException) {
+            ApiResult(status = ResultStatus.NetworkException)
+        } catch (ex: Exception) {
+            ApiResult(status = ResultStatus.GeneralException)
+        }
 
     companion object {
         private val apiService = getDefaultABLService()
