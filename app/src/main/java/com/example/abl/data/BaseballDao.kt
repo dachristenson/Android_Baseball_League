@@ -18,4 +18,9 @@ abstract class BaseballDao {
 
     @Query("SELECT * FROM standings")
     abstract suspend fun getCurrentStandings(): List<TeamStanding>
+
+    @Query("SELECT * FROM games WHERE gameId LIKE :dateString")
+    abstract fun getGamesForDate(
+        dateString: String
+    ): LiveData<List<ScheduledGame>>
 }

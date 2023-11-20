@@ -52,6 +52,11 @@ data class UITeam(
 
         @JvmStatic
         fun fromTeamId(teamId: String?) = allTeams.firstOrNull { uiTeam ->
-            uiTeam.teamId == teamId }
+            uiTeam.teamId == teamId
+        }
+
+        fun fromTeamIds(vararg teamIds: String) = teamIds.map { teamId ->
+            fromTeamId(teamId)
+        }
     }
 }

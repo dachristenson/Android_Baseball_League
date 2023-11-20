@@ -18,4 +18,12 @@
     <string name="streak_abbr">STRK</string>
     <string name="view_roster">View Roster</string>
     <string name="in_abl"> in ABL </string>
+    <string name="network_exception_message">A network error has occurred. Please check your connection and try again.</string>
+    <string name="request_exception_message">The API request was invalid. Please try again.</string>
+    <string name="general_exception_message">An error occurred retrieving data. Please try again.</string>
+    <string name="scoreboard_first_base">Scoreboard First Base</string>
+    <string name="scoreboard_second_base">Scoreboard Second Base</string>
+    <string name="scoreboard_third_base">Scoreboard Third Base</string>
+    <string name="scoreboard_left_arrow">Scoreboard Left Arrow</string>
+    <string name="scoreboard_right_arrow">Scoreboard Right Arrow</string>
 </resources>

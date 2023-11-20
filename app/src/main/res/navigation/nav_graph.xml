@@ -18,6 +18,11 @@
     </action>
 
     <fragment
+        android:id="@+id/scoreboardFragment"
+        android:name="com.example.abl.standings.StandingsFragment"
+        android:label="@string/scoreboard" />
+
+    <fragment
         android:id="@+id/standingsFragment"
         android:name="com.example.abl.standings.StandingsFragment"
         android:label="@string/standings" />

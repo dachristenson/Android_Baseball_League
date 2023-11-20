@@ -1,5 +1,5 @@
 package com.example.abl.scoreboard
-/*
+
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,17 +16,23 @@ class ScoreboardFragment : Fragment() {
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
 
-        val binding = FragmentScoreboardBinding.inflate(inflater, container, false)
+        val binding =
+            FragmentScoreboardBinding.inflate(inflater, container, false)
             .apply {
                 vm = scoreboardViewModel
 
-                scoreboardChangeYesterday.setOnClickListener { scoreboardViewModel.goToDate(-1) }
+                scoreboardChangeYesterday.setOnClickListener {
+                    scoreboardViewModel.goToDate(-1)
+                }
+
                 scoreboardChangeYesterday.setOnLongClickListener {
                     scoreboardViewModel.goToDate(monthsToMove = -1)
                     true
                 }
 
-                scoreboardChangeTomorrow.setOnClickListener { scoreboardViewModel.goToDate(1) }
+                scoreboardChangeTomorrow.setOnClickListener {
+                    scoreboardViewModel.goToDate(1)
+                }
                 scoreboardChangeTomorrow.setOnLongClickListener {
                     scoreboardViewModel.goToDate(monthsToMove = 1)
                     true
@@ -43,4 +49,4 @@ class ScoreboardFragment : Fragment() {
 
         return binding.root
     }
-}*/
+}

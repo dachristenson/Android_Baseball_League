@@ -3,12 +3,13 @@ package com.example.abl.data
 import android.content.Context
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.abl.scoreboard.ScheduledGame
 import com.example.abl.standings.TeamStanding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Database(
-    entities = [TeamStanding::class],
+    entities = [ScheduledGame::class, TeamStanding::class],
     exportSchema = false,
     version = 1
 )

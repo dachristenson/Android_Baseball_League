@@ -1,14 +1,20 @@
 package com.example.abl.data
 
 import androidx.lifecycle.LiveData
+import com.example.abl.scoreboard.ScheduledGame
 import com.example.abl.standings.TeamStanding
 import com.example.abl.util.convertToTeamStandings
+import com.example.abl.util.toGameDateString
 import dev.mfazio.abl.api.services.getDefaultABLService
 import java.io.IOException
+import java.time.LocalDate
 
 class BaseballRepository(private val baseballDao: BaseballDao) {
     fun getStandings(): LiveData<List<TeamStanding>> =
         baseballDao.getStandings()
+
+    fun getGamesForDate(date: LocalDate): LiveData<List<ScheduledGame>> =
+        baseballDao.getGamesForDate("${date.toGameDateString()}%")
 
     suspend fun updateStandings(): ResultStatus {
         val standingsResult = safeApiRequest {
