@@ -23,4 +23,22 @@ abstract class BaseballDao {
     abstract fun getGamesForDate(
         dateString: String
     ): LiveData<List<ScheduledGame>>
+
+    @Query("SELECT * FROM games WHERE gameId = :gameId")
+    abstract fun getGameByGameId(gameId: String): ScheduledGame?
+
+    @Insert
+    abstract suspend fun insertGame(game: ScheduledGame)
+
+    @Update
+    abstract suspend fun updateGame(game: ScheduledGame)
+
+    @Transaction
+    open suspend fun insertOrUpdateGames(games: List<ScheduledGame>) {
+        games.forEach { game ->
+            getGameByGameId(game.gameId)?.let { dbGame ->
+                updateGame(game.apply { id = dbGame.id })
+            } ?: insertGame(game)
+        }
+    }
 }

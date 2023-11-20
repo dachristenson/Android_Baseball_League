@@ -3,6 +3,7 @@ package com.example.abl.data
 import androidx.lifecycle.LiveData
 import com.example.abl.scoreboard.ScheduledGame
 import com.example.abl.standings.TeamStanding
+import com.example.abl.util.convertToScheduledGames
 import com.example.abl.util.convertToTeamStandings
 import com.example.abl.util.toGameDateString
 import dev.mfazio.abl.api.services.getDefaultABLService
@@ -34,6 +35,21 @@ class BaseballRepository(private val baseballDao: BaseballDao) {
             ResultStatus.Success
         } else {
             standingsResult.status
+        }
+    }
+
+    suspend fun updateGamesForDate(date: LocalDate): ResultStatus {
+        val gamesResult = safeApiRequest {
+            apiService.getGames(requestedDate = date)
+        }
+
+        return if (gamesResult.success && gamesResult.result?.any() == true) {
+            baseballDao.insertOrUpdateGames(
+                gamesResult.result.convertToScheduledGames()
+            )
+            ResultStatus.Success
+        } else {
+            gamesResult.status
         }
     }
 
