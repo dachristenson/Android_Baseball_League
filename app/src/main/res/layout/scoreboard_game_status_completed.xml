@@ -14,7 +14,7 @@
 
         <variable
             name="game"
-            type="dev.mfazio.abl.scoreboard.ScheduledGame" />
+            type="com.example.abl.scoreboard.ScheduledGame" />
     </data>
 
     <!-- TODO: Get the innings -->

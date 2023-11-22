@@ -14,10 +14,10 @@
     <data>
         <import
             alias="UIExtensions"
-            type="dev.mfazio.abl.util.UIExtensionsKt" />
+            type="com.example.abl.util.UIExtensionsKt" />
         <variable
             name="game"
-            type="dev.mfazio.abl.scoreboard.ScheduledGame" />
+            type="com.example.abl.scoreboard.ScheduledGame" />
     </data>
 
     <LinearLayout

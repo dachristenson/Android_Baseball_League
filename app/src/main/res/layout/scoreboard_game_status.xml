@@ -13,11 +13,11 @@
 
     <data>
 
-        <import type="dev.mfazio.abl.scoreboard.ScheduledGameStatus" />
+        <import type="com.example.abl.scoreboard.ScheduledGameStatus" />
 
         <variable
             name="game"
-            type="dev.mfazio.abl.scoreboard.ScheduledGame" />
+            type="com.example.abl.scoreboard.ScheduledGame" />
     </data>
 
     <FrameLayout

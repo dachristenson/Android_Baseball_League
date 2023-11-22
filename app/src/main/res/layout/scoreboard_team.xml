@@ -21,7 +21,7 @@
             type="String" />
         <variable
             name="uiTeam"
-            type="dev.mfazio.abl.teams.UITeam" />
+            type="com.example.abl.teams.UITeam" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

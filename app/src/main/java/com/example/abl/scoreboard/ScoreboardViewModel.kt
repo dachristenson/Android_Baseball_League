@@ -30,18 +30,18 @@ class ScoreboardViewModel(application: Application) : AndroidViewModel(applicati
                 BaseballRepository.getInstance(dao)
             }
 
-        games = Transformations.switchMap(selectedDate) { selectedDate ->
+        games = selectedDate.switchMap { selectedDate ->
             refreshScores(selectedDate)
             repo.getGamesForDate(selectedDate)
         }
 
-        teams = Transformations.map(games) { scheduledGames ->
+        teams = games.map { scheduledGames ->
             scheduledGames.flatMap { game ->
                 UITeam.fromTeamIds(game.homeTeamId, game.awayTeamId)
             }.filterNotNull()
         }
 
-        currentDateText = Transformations.map(selectedDate) { currentDate ->
+        currentDateText = selectedDate.map { currentDate ->
             currentDateTextFormat.format(currentDate)
         }
     }

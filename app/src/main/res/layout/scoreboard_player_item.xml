@@ -18,7 +18,7 @@
             type="String" />
         <variable
             name="playerInfo"
-            type="dev.mfazio.abl.scoreboard.ScoreboardPlayerInfo" />
+            type="com.example.abl.scoreboard.ScoreboardPlayerInfo" />
     </data>
 
 <LinearLayout android:layout_width="match_parent"

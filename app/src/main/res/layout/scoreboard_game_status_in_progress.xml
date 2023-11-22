@@ -12,11 +12,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
-        <import type="dev.mfazio.abl.util.UIExtensionsKt" alias="UIExtensions" />
+        <import type="com.example.abl.util.UIExtensionsKt" alias="UIExtensions" />
 
         <variable
             name="game"
-            type="dev.mfazio.abl.scoreboard.ScheduledGame" />
+            type="com.example.abl.scoreboard.ScheduledGame" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout

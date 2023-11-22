@@ -15,11 +15,11 @@
 
         <import type="java.util.List" />
 
-        <import type="dev.mfazio.abl.teams.UITeam" />
+        <import type="com.example.abl.teams.UITeam" />
 
         <variable
             name="game"
-            type="dev.mfazio.abl.scoreboard.ScheduledGame" />
+            type="com.example.abl.scoreboard.ScheduledGame" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
