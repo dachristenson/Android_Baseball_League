@@ -19,7 +19,7 @@
 
     <fragment
         android:id="@+id/scoreboardFragment"
-        android:name="com.example.abl.standings.StandingsFragment"
+        android:name="com.example.abl.scoreboard.ScoreboardFragment"
         android:label="@string/scoreboard" />
 
     <fragment
