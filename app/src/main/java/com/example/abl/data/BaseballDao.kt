@@ -2,6 +2,10 @@ package com.example.abl.data
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import com.example.abl.players.Player
+import com.example.abl.players.PlayerStats
+import com.example.abl.players.PlayerWithStats
+import com.example.abl.players.Position
 import com.example.abl.standings.TeamStanding
 import com.example.abl.scoreboard.ScheduledGame
 
@@ -41,4 +45,82 @@ abstract class BaseballDao {
             } ?: insertGame(game)
         }
     }
+
+    @Query("SELECT * FROM players WHERE playerId = :playerId")
+    abstract fun getPlayerById(playerId: String): Player?
+
+    @Insert
+    abstract suspend fun insertPlayer(player: Player)
+
+    @Update
+    abstract suspend fun updatePlayer(player: Player)
+
+    @Transaction
+    open suspend fun insertOrUpdatePlayers(players: List<Player>) {
+        players.forEach { player -> insertOrUpdatePlayer(player) }
+    }
+
+    @Transaction
+    open suspend fun insertOrUpdatePlayer(player: Player) {
+        getPlayerById(player.playerId)?.let { dbPlayer ->
+            updatePlayer(player.apply { id = dbPlayer.id })
+        } ?: insertPlayerAndStats(player)
+    }
+
+    @Transaction
+    open suspend fun insertPlayerAndStats(player: Player) {
+        insertPlayer(player)
+        if (getPlayerStatsById(player.playerId) == null) {
+            insertPlayerStats(PlayerStats(player.playerId))
+        }
+    }
+
+    @Query("DELETE FROM players")
+    abstract suspend fun deleteAllPlayers()
+
+    @Query("SELECT * FROM stats WHERE playerId = :playerId")
+    abstract suspend fun getPlayerStatsById(playerId: String): PlayerStats?
+
+    @Insert
+    abstract suspend fun insertPlayerStats(stats: PlayerStats)
+
+    @Update
+    abstract suspend fun updatePlayerStats(stats: PlayerStats)
+
+    @Transaction
+    @Query("SELECT * FROM players WHERE playerId = :playerId")
+    abstract fun getPlayerWithStats(playerId: String): LiveData<PlayerWithStats>?
+
+    @Transaction
+    @Query("SELECT * FROM players WHERE position NOT IN (:pitcherPositions)")
+    abstract fun getBattersWithStats(
+        pitcherPositions: List<Position> = listOf(
+            Position.StartingPitcher,
+            Position.ReliefPitcher
+        )
+    ): LiveData<List<PlayerWithStats>?>
+
+    @Transaction
+    @Query("SELECT * FROM players WHERE position IN (:pitcherPositions)")
+    abstract fun getPitchersWithStats(
+        pitcherPositions: List<Position> = listOf(
+            Position.StartingPitcher,
+            Position.ReliefPitcher
+        )
+    ): LiveData<List<PlayerWithStats>?>
+
+    @Transaction
+    open suspend fun insertOrUpdateStats(playerStats: List<PlayerStats>) {
+        playerStats.forEach { stats ->
+            insertOrUpdatePlayerStats(stats)
+        }
+    }
+
+    @Transaction
+    open suspend fun insertOrUpdatePlayerStats(playerStats: PlayerStats) {
+        getPlayerStatsById(playerStats.playerId)?.let { dbPlayerStats ->
+            updatePlayerStats(playerStats.apply { id = dbPlayerStats.id })
+        } ?: insertPlayerStats(playerStats)
+    }
 }
+

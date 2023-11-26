@@ -3,14 +3,15 @@ package com.example.abl.data
 import androidx.lifecycle.LiveData
 import com.example.abl.scoreboard.ScheduledGame
 import com.example.abl.standings.TeamStanding
-import com.example.abl.util.convertToScheduledGames
-import com.example.abl.util.convertToTeamStandings
-import com.example.abl.util.toGameDateString
+import com.example.abl.util.*
 import dev.mfazio.abl.api.services.getDefaultABLService
 import java.io.IOException
 import java.time.LocalDate
 
-class BaseballRepository(private val baseballDao: BaseballDao) {
+class BaseballRepository(private val baseballDatabase: BaseballDatabase) {
+
+    private val baseballDao = baseballDatabase.baseballDao()
+
     fun getStandings(): LiveData<List<TeamStanding>> =
         baseballDao.getStandings()
 
@@ -53,6 +54,79 @@ class BaseballRepository(private val baseballDao: BaseballDao) {
         }
     }
 
+    fun getPlayerWithStats(playerId: String) = baseballDao.getPlayerWithStats(playerId)
+
+    fun getBattersWithStats() = baseballDao.getBattersWithStats()
+
+    fun getPitchersWithStats() = baseballDao.getPitchersWithStats()
+
+    suspend fun updatePlayer(playerId: String): ResultStatus {
+        val playerResult = safeApiRequest {
+            apiService.getSinglePlayer(playerId)
+        }
+
+        return if (playerResult.success) {
+
+            val batterPair = playerResult.result?.batting?.convertToBatterAndStats()
+            val pitcherPair = playerResult.result?.pitching?.convertToPitcherAndStats()
+
+            val player = batterPair?.first ?: pitcherPair?.first
+            val playerStats = batterPair?.second ?: pitcherPair?.second
+
+            if (player != null) {
+                baseballDao.insertOrUpdatePlayer(player)
+            }
+
+            if (playerStats != null) {
+                baseballDao.insertOrUpdatePlayerStats(playerStats)
+            }
+
+            ResultStatus.Success
+        } else {
+            playerResult.status
+        }
+    }
+
+    suspend fun updateBattingLeaders(): ResultStatus {
+        val leadersResult = safeApiRequest {
+            apiService.getBattingLeaders()
+        }
+
+        return if (
+            leadersResult.success &&
+            leadersResult.result?.any() == true
+        ) {
+            val (players, playerStats) = leadersResult.result.convertToBattersAndStats()
+
+            baseballDao.insertOrUpdatePlayers(players)
+            baseballDao.insertOrUpdateStats(playerStats)
+
+            ResultStatus.Success
+        } else {
+            leadersResult.status
+        }
+    }
+
+    suspend fun updatePitchingLeaders(): ResultStatus {
+        val leadersResult = safeApiRequest {
+            apiService.getPitchingLeaders()
+        }
+
+        return if (
+            leadersResult.success &&
+            leadersResult.result?.any() == true
+        ) {
+            val (players, playerStats) = leadersResult.result.convertToPitchersAndStats()
+
+            baseballDao.insertOrUpdatePlayers(players)
+            baseballDao.insertOrUpdateStats(playerStats)
+
+            ResultStatus.Success
+        } else {
+            leadersResult.status
+        }
+    }
+
     enum class ResultStatus {
         Unknown,
         Success,
@@ -88,9 +162,9 @@ class BaseballRepository(private val baseballDao: BaseballDao) {
         @Volatile
         private var instance: BaseballRepository? = null
 
-        fun getInstance(baseballDao: BaseballDao) =
+        fun getInstance(baseballDatabase: BaseballDatabase) =
             this.instance ?: synchronized(this) {
-                instance ?: BaseballRepository(baseballDao).also {
+                instance ?: BaseballRepository(baseballDatabase).also {
                     instance = it
                 }
             }

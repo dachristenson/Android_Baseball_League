@@ -17,6 +17,45 @@
             app:argType="string" />
     </action>
 
+    <action
+        android:id="@+id/actionGoToPlayer"
+        app:destination="@id/singlePlayerFragment">
+        <argument
+            android:name="playerId"
+            app:argType="string" />
+        <argument
+            android:name="playerName"
+            app:argType="string" />
+    </action>
+
+    <action
+        android:id="@+id/actionGoToTeamRoster"
+        app:destination="@id/playersFragment">
+        <argument
+            android:name="teamId"
+            app:argType="string" />
+    </action>
+
+    <fragment
+        android:id="@+id/leadersFragment"
+        android:name="com.example.abl.leaders.LeadersFragment"
+        android:label="@string/leaders"
+        tools:layout="@layout/fragment_leaders" />
+
+    <fragment
+        android:id="@+id/singlePlayerFragment"
+        android:name="com.example.abl.players.SinglePlayerFragment"
+        android:label="{playerName}"
+        tools:layout="@layout/fragment_single_player">
+        <argument
+            android:name="playerId"
+            app:argType="string" />
+        <argument
+            android:name="playerName"
+            app:argType="string" />
+        <deepLink app:uri="https://link.mfazio.dev/players/{playerId}?playerName={playerName}" />
+    </fragment>
+
     <fragment
         android:id="@+id/scoreboardFragment"
         android:name="com.example.abl.scoreboard.ScoreboardFragment"

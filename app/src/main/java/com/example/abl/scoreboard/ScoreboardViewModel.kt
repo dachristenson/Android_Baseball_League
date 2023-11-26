@@ -25,9 +25,8 @@ class ScoreboardViewModel(application: Application) : AndroidViewModel(applicati
     init {
         repo = BaseballDatabase
             .getDatabase(application, viewModelScope)
-            .baseballDao()
-            .let { dao ->
-                BaseballRepository.getInstance(dao)
+            .let { db ->
+                BaseballRepository.getInstance(db)
             }
 
         games = selectedDate.switchMap { selectedDate ->

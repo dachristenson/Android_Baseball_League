@@ -1,23 +1,25 @@
 package com.example.abl.data
 
 import androidx.room.TypeConverter
+import com.example.abl.players.Hand
+import com.example.abl.players.Position
+import com.example.abl.scoreboard.OccupiedBases
+import com.example.abl.scoreboard.ScheduledGameStatus
 import com.example.abl.standings.WinLoss
 import com.example.abl.teams.Division
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-import com.example.abl.scoreboard.OccupiedBases
-import com.example.abl.scoreboard.ScheduledGameStatus
 
-class BaseballConverters {
+class Converters {
     private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
 
     @TypeConverter
     fun fromDivision(division: Division?) =
-    division?.ordinal ?: Division.Unknown.ordinal
+        division?.ordinal ?: Division.Unknown.ordinal
 
     @TypeConverter
     fun toDivision(divisionOrdinal: Int?) =
-        if(divisionOrdinal != null) {
+        if (divisionOrdinal != null) {
             Division.values()[divisionOrdinal]
         } else {
             Division.Unknown
@@ -47,13 +49,35 @@ class BaseballConverters {
     fun fromScheduledGameStatus(status: ScheduledGameStatus) = status.ordinal
 
     @TypeConverter
-    fun toScheduledGameStatus(statusOrdinal: Int) =
-        ScheduledGameStatus.values()[statusOrdinal]
+    fun toScheduledGameStatus(statusOrdinal: Int) = ScheduledGameStatus.values()[statusOrdinal]
 
     @TypeConverter
     fun fromOccupiedBases(bases: OccupiedBases?) = bases?.toStringList()
 
     @TypeConverter
-    fun toOccupiedBases(basesStringList: String?) =
-        OccupiedBases.fromStringList(basesStringList)
+    fun toOccupiedBases(basesStringList: String?) = OccupiedBases.fromStringList(basesStringList)
+
+    @TypeConverter
+    fun fromHand(hand: Hand?) =
+        hand?.ordinal ?: Hand.Right.ordinal
+
+    @TypeConverter
+    fun toHand(handOrdinal: Int?) =
+        if (handOrdinal != null) {
+            Hand.values()[handOrdinal]
+        } else {
+            Hand.Right
+        }
+
+    @TypeConverter
+    fun fromPosition(position: Position?) =
+        position?.ordinal ?: Position.Unknown.ordinal
+
+    @TypeConverter
+    fun toPosition(positionOrdinal: Int?) =
+        if (positionOrdinal != null) {
+            Position.values()[positionOrdinal]
+        } else {
+            Position.Unknown
+        }
 }

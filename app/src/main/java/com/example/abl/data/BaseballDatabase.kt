@@ -3,17 +3,22 @@ package com.example.abl.data
 import android.content.Context
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.abl.players.Player
+import com.example.abl.players.PlayerStats
 import com.example.abl.scoreboard.ScheduledGame
 import com.example.abl.standings.TeamStanding
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Database(
-    entities = [ScheduledGame::class, TeamStanding::class],
+    entities = [ScheduledGame::class,
+        TeamStanding::class,
+        Player::class,
+        PlayerStats::class],
     exportSchema = false,
     version = 1
 )
-@TypeConverters(BaseballConverters::class)
+@TypeConverters(Converters::class)
 abstract class BaseballDatabase : RoomDatabase() {
     abstract fun baseballDao(): BaseballDao
     companion object {

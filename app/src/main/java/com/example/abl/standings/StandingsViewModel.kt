@@ -24,9 +24,8 @@ class StandingsViewModel(application: Application):
     init {
         repo = BaseballDatabase
             .getDatabase(application, viewModelScope)
-            .baseballDao()
-            .let { dao ->
-                BaseballRepository.getInstance(dao)
+            .let { db ->
+                BaseballRepository.getInstance(db)
             }
 
         standings =
