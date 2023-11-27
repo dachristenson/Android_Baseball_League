@@ -37,6 +37,18 @@
     </action>
 
     <fragment
+        android:id="@+id/playersFragment"
+        android:name="com.example.abl.players.PlayersFragment"
+        android:label="@string/players">
+
+        <argument
+            android:name="teamId"
+            android:defaultValue="@null"
+            app:argType="string"
+            app:nullable="true" />
+    </fragment>
+
+    <fragment
         android:id="@+id/leadersFragment"
         android:name="com.example.abl.leaders.LeadersFragment"
         android:label="@string/leaders"

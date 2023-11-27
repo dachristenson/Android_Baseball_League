@@ -4,6 +4,8 @@ import android.content.Context
 import androidx.room.*
 import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.abl.players.Player
+import com.example.abl.players.PlayerKeys
+import com.example.abl.players.PlayerListItem
 import com.example.abl.players.PlayerStats
 import com.example.abl.scoreboard.ScheduledGame
 import com.example.abl.standings.TeamStanding
@@ -11,16 +13,22 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Database(
-    entities = [ScheduledGame::class,
+    entities = [
+        ScheduledGame::class,
         TeamStanding::class,
         Player::class,
-        PlayerStats::class],
+        PlayerStats::class,
+        PlayerListItem::class,
+        PlayerKeys::class],
     exportSchema = false,
     version = 1
 )
 @TypeConverters(Converters::class)
 abstract class BaseballDatabase : RoomDatabase() {
     abstract fun baseballDao(): BaseballDao
+
+    abstract  fun playerKeysDao(): PlayerKeysDao
+
     companion object {
         @Volatile
         private var Instance : BaseballDatabase? = null

@@ -1,5 +1,5 @@
 package com.example.abl.players
-/*
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,4 +53,3 @@ private class PlayerListItemDiffCallback : DiffUtil.ItemCallback<PlayerListItem>
     override fun areContentsTheSame(oldItem: PlayerListItem, newItem: PlayerListItem) =
         oldItem == newItem
 }
-*/

@@ -1,8 +1,10 @@
 package com.example.abl.data
 
 import androidx.lifecycle.LiveData
+import androidx.paging.PagingSource
 import androidx.room.*
 import com.example.abl.players.Player
+import com.example.abl.players.PlayerListItem
 import com.example.abl.players.PlayerStats
 import com.example.abl.players.PlayerWithStats
 import com.example.abl.players.Position
@@ -122,5 +124,27 @@ abstract class BaseballDao {
             updatePlayerStats(playerStats.apply { id = dbPlayerStats.id })
         } ?: insertPlayerStats(playerStats)
     }
+
+    @Query(
+        """
+            SELECT * FROM player_list_items
+            WHERE (:teamId IS NULL OR teamId = :teamId)
+            AND (:nameQuery IS NULL OR playerName LIKE :nameQuery)
+            ORDER BY playerId
+        """
+    )
+
+    abstract fun getPlayerListItems(
+        teamId: String? = null,
+        nameQuery: String? = null,
+    ): PagingSource<Int, PlayerListItem>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    abstract suspend fun insertPlayerListItems(
+        playerListItems: List<PlayerListItem>
+    )
+
+    @Query("DELETE FROM player_list_items")
+    abstract suspend fun deleteAllPlayerListItems()
 }
 
