@@ -5,6 +5,7 @@ val room_version = "2.6.0"
 val material_version = "1.10.0"
 val retrofit_version = "2.9.0"
 val abl_client_version = "1.1.1"
+val paging_version = "3.2.1"
 
 plugins {
     id("com.android.application")
@@ -68,7 +69,7 @@ dependencies {
     implementation("dev.mfazio:abl-api-client:$abl_client_version")
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
-    implementation("androidx.paging:paging-runtime-ktx:3.2.1")
+    implementation("androidx.paging:paging-runtime-ktx:$paging_version")
     kapt("androidx.room:room-compiler:$room_version")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
