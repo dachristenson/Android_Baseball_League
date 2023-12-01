@@ -1,12 +1,19 @@
 package com.example.abl.data
 
 import androidx.lifecycle.LiveData
+import androidx.paging.ExperimentalPagingApi
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import com.example.abl.players.PlayerListItem
+import com.example.abl.players.PlayerListRemoteMediator
 import com.example.abl.scoreboard.ScheduledGame
 import com.example.abl.standings.TeamStanding
 import com.example.abl.util.*
 import dev.mfazio.abl.api.services.getDefaultABLService
 import java.io.IOException
 import java.time.LocalDate
+import kotlinx.coroutines.flow.Flow
 
 class BaseballRepository(private val baseballDatabase: BaseballDatabase) {
 
@@ -127,6 +134,28 @@ class BaseballRepository(private val baseballDatabase: BaseballDatabase) {
         }
     }
 
+    @ExperimentalPagingApi
+    fun getPlayerListItems(
+        teamId: String?,
+        nameQuery: String?
+    ): Flow<PagingData<PlayerListItem>> {
+        val dbNameQuery = if (nameQuery != null) "%$nameQuery%" else null
+        return Pager(
+            config = PagingConfig(
+                pageSize = defaultPageSize
+            ),
+            remoteMediator = PlayerListRemoteMediator(
+                apiService,
+                baseballDatabase,
+                teamId,
+                nameQuery
+            ),
+            pagingSourceFactory = {
+                baseballDao.getPlayerListItems(teamId, dbNameQuery)
+            }
+        ).flow
+    }
+
     enum class ResultStatus {
         Unknown,
         Success,
@@ -158,6 +187,7 @@ class BaseballRepository(private val baseballDatabase: BaseballDatabase) {
 
     companion object {
         private val apiService = getDefaultABLService()
+        private const val defaultPageSize = 25
 
         @Volatile
         private var instance: BaseballRepository? = null
