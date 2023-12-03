@@ -14,41 +14,42 @@ import kotlinx.coroutines.launch
 
 @Database(
     entities = [
-        ScheduledGame::class,
-        TeamStanding::class,
         Player::class,
-        PlayerStats::class,
         PlayerListItem::class,
-        PlayerKeys::class],
+        PlayerKeys::class,
+        PlayerStats::class,
+        ScheduledGame::class,
+        TeamStanding::class
+               ],
     exportSchema = false,
     version = 1
 )
-@TypeConverters(Converters::class)
+@TypeConverters(BaseballConverters::class)
 abstract class BaseballDatabase : RoomDatabase() {
     abstract fun baseballDao(): BaseballDao
 
-    abstract  fun playerKeysDao(): PlayerKeysDao
+    abstract fun playerKeysDao(): PlayerKeysDao
 
     companion object {
         @Volatile
-        private var Instance : BaseballDatabase? = null
+        private var Instance: BaseballDatabase? = null
 
         fun getDatabase(context: Context, scope: CoroutineScope):
-                BaseballDatabase = Instance ?: synchronized(this) {
-                    val instance = Room.databaseBuilder(
-                        context,
-                        BaseballDatabase::class.java,
-                        "BaseballDatabase"
-                    ).addCallback(object : RoomDatabase.Callback() {
-                        override fun onCreate(db: SupportSQLiteDatabase) {
-                            super.onCreate(db)
-                            scope.launch {
-                                Instance
-                                    ?.baseballDao()
-                                    ?.insertStandings(TeamStanding.mockTeamStandings)
-                            }
+            BaseballDatabase = Instance ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context,
+                    BaseballDatabase::class.java,
+                    "BaseballDatabase"
+                ).addCallback(object : RoomDatabase.Callback() {
+                    override fun onCreate(db: SupportSQLiteDatabase) {
+                        super.onCreate(db)
+                        scope.launch {
+                            Instance
+                                ?.baseballDao()
+                                ?.insertStandings(TeamStanding.mockTeamStandings)
                         }
-                    }).build()
+                    }
+                }).build()
 
             Instance = instance
 

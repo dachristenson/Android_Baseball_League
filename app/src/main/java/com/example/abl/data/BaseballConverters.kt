@@ -10,7 +10,7 @@ import com.example.abl.teams.Division
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
-class Converters {
+class BaseballConverters {
     private val formatter = DateTimeFormatter.ISO_LOCAL_DATE_TIME
 
     @TypeConverter

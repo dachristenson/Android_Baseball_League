@@ -1,7 +1,7 @@
 val kotlin_version = "1.9.0"
 val app_compat_version = "1.6.1"
 val nav_version = "2.7.5"
-val room_version = "2.6.0"
+val room_version = "2.6.1"
 val material_version = "1.10.0"
 val retrofit_version = "2.9.0"
 val abl_client_version = "1.1.1"
@@ -70,6 +70,7 @@ dependencies {
     implementation("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation("androidx.paging:paging-runtime-ktx:$paging_version")
+    implementation("androidx.room:room-paging:2.6.1")
     kapt("androidx.room:room-compiler:$room_version")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

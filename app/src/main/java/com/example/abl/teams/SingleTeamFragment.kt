@@ -6,7 +6,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.activityViewModels
+import androidx.navigation.findNavController
 import androidx.navigation.fragment.navArgs
+import com.example.abl.NavGraphDirections
 import com.example.abl.databinding.FragmentSingleTeamBinding
 
 class SingleTeamFragment : Fragment() {
@@ -23,6 +25,14 @@ class SingleTeamFragment : Fragment() {
             .apply {
                 vm = singleTeamViewModel.apply {
                     setTeam(args.teamId)
+                }
+
+                viewRosterButtonClickListener = View.OnClickListener { view ->
+                    val action = NavGraphDirections.actionGoToTeamRoster(
+                        args.teamId
+                    )
+
+                    view.findNavController().navigate(action)
                 }
 
                 lifecycleOwner = viewLifecycleOwner
