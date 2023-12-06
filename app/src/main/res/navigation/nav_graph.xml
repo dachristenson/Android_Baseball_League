@@ -98,4 +98,9 @@
         <deepLink app:uri="https://link.mfazio.dev/teams/{teamId}?teamName={teamName}" />
     </fragment>
 
+    <fragment
+        android:id="@+id/settingsFragment"
+        android:name="com.example.abl.settings.SettingsFragment"
+        android:label="@string/settings" />
+
 </navigation>

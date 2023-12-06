@@ -71,6 +71,8 @@ dependencies {
     implementation("androidx.viewpager2:viewpager2:1.0.0")
     implementation("androidx.paging:paging-runtime-ktx:$paging_version")
     implementation("androidx.room:room-paging:2.6.1")
+    implementation("androidx.preference:preference-ktx:1.2.1")
+    implementation("androidx.palette:palette-ktx:1.0.0")
     kapt("androidx.room:room-compiler:$room_version")
     testImplementation("junit:junit:4.13.2")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")

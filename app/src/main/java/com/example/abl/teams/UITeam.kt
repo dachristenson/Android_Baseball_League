@@ -1,5 +1,9 @@
 package com.example.abl.teams
 
+import android.content.Context
+import androidx.core.content.ContextCompat
+import androidx.core.graphics.drawable.toBitmap
+import androidx.palette.graphics.Palette
 import com.example.abl.R
 
 data class UITeam(
@@ -58,5 +62,14 @@ data class UITeam(
         fun fromTeamIds(vararg teamIds: String) = teamIds.map { teamId ->
             fromTeamId(teamId)
         }
+
+        fun getTeamPalette(context: Context, teamId: String?) =
+            fromTeamId(teamId)?.let { team ->
+                ContextCompat.getDrawable(context, team.logoId)
+                    ?.toBitmap()
+                    ?.let { logoBitmap ->
+                        Palette.from(logoBitmap).generate()
+                    }
+            }
     }
 }
