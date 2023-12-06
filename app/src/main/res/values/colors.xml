@@ -68,4 +68,8 @@
     <color name="wiRapidsPrimary">#FF5872</color>
     <color name="wiRapidsSecondary">#A8FFA9</color>
     <color name="wiRapidsTertiary">#000</color>
+
+    <color name="darkAndroidGreen">#006F3D</color>
+    <color name="ablTan">#AFAD97</color>
+    <color name="darkAblTan">#9B977E</color>
 </resources>

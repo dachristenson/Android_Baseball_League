@@ -6,6 +6,19 @@
     </style>
 
     <style name="Theme.AndroidBaseballLeague" parent="Base.Theme.AndroidBaseballLeague">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/androidGreen</item>
+        <item name="colorPrimaryVariant">@color/darkAndroidGreen</item>
+        <item name="colorOnPrimary">@android:color/white</item>
+        <!-- Secondary brand color. -->
+        <item name="colorSecondary">@color/ablTan</item>
+        <item name="colorSecondaryVariant">@color/darkAblTan</item>
+        <item name="colorOnSecondary">@android:color/black</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+        <!-- Navigation bar color. -->
+        <item name="android:navigationBarColor" tools:targetApi="l">?attr/colorPrimary</item>
+
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:windowTranslucentStatus">true</item>
     </style>
