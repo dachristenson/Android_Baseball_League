@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.abl.R
 import com.example.abl.databinding.FragmentLeadersListBinding
 
-class LeadersListFragment(private val leaderType: LeaderType) : Fragment() {
+class LeadersListFragment(private val leaderType: LeaderType? = LeaderType.Batting) : Fragment() {
     private val leadersListViewModel by activityViewModels<LeadersListViewModel>()
 
     override fun onCreateView(

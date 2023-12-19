@@ -7,12 +7,15 @@ import androidx.preference.DropDownPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
+import androidx.preference.SwitchPreferenceCompat
 import com.example.abl.R
 import com.example.abl.teams.UITeam
+import kotlinx.coroutines.launch
 
 class SettingsFragment : PreferenceFragmentCompat() {
 
     private lateinit var favoriteTeamPreference: DropDownPreference
+    private lateinit var favoriteTeamColorPreference: SwitchPreferenceCompat
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         val ctx = preferenceManager.context
@@ -29,13 +32,19 @@ class SettingsFragment : PreferenceFragmentCompat() {
             summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
         }
 
-        screen.addPreference(favoriteTeamPreference)
+        this.favoriteTeamColorPreference = SwitchPreferenceCompat(ctx).apply {
+            key = favoriteTeamColorsPreferenceKey
+            title = getString(R.string.team_color_nav_bar)
+            setDefaultValue(false)
+        }
 
         favoriteTeamPreference.onPreferenceChangeListener =
             Preference.OnPreferenceChangeListener { _, newValue ->
                 val teamId = newValue?.toString()
 
-                setNavBarColorForTeam(teamId)
+                if (favoriteTeamColorPreference.isChecked) {
+                    setNavBarColorForTeam(teamId)
+                }
 
                 if (teamId != null) {
                     favoriteTeamPreference.icon = getIconForTeam(teamId)
@@ -43,6 +52,25 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
                 true
             }
+
+        screen.addPreference(favoriteTeamPreference)
+
+        favoriteTeamColorPreference.onPreferenceChangeListener =
+            Preference.OnPreferenceChangeListener { _, newValue ->
+                val useFavoriteTeamColor = newValue as? Boolean
+
+                setNavBarColorForTeam(
+                    if (useFavoriteTeamColor == true) {
+                        favoriteTeamPreference.value
+                    } else null
+                )
+
+                //saveSettings(useFavoriteTeamColor = useFavoriteTeamColor)
+
+                true
+            }
+
+        screen.addPreference(favoriteTeamColorPreference)
 
         preferenceScreen = screen
     }
@@ -79,5 +107,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     companion object {
         const val favoriteTeamPreferenceKey = "favoriteTeam"
+        const val favoriteTeamColorsPreferenceKey = "useFavoriteTeamColors"
     }
 }

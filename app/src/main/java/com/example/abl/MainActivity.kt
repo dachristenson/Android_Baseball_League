@@ -8,7 +8,10 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
 import com.example.abl.databinding.ActivityMainBinding
+import com.example.abl.settings.SettingsFragment
+import com.example.abl.teams.UITeam
 
 class MainActivity : AppCompatActivity() {
 
@@ -19,6 +22,7 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val binding = ActivityMainBinding.inflate(layoutInflater)
+        val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.containerFragment) as NavHostFragment
 
@@ -30,6 +34,15 @@ class MainActivity : AppCompatActivity() {
         this.appBarConfiguration =
             AppBarConfiguration(binding.navView.menu, binding.drawerLayout)
         setupActionBarWithNavController(this.navController, appBarConfiguration)
+
+        if (prefs.getBoolean(SettingsFragment.favoriteTeamColorsPreferenceKey, false)) {
+            UITeam.getTeamPalette(
+                this,
+                prefs.getString(SettingsFragment.favoriteTeamPreferenceKey, null)
+            )?.dominantSwatch?.rgb?.let {
+                window.navigationBarColor = it
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean =
