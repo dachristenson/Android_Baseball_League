@@ -97,7 +97,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
         val colorValue = TypedValue()
 
         activity?.theme?.resolveAttribute(
-            R.attr.colorPrimary,
+            android.R.attr.colorPrimary,
             colorValue,
             true
         )
