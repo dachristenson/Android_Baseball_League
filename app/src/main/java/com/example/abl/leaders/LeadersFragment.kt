@@ -10,6 +10,7 @@ import androidx.viewpager2.widget.ViewPager2
 import com.google.android.material.tabs.TabLayout
 import com.google.android.material.tabs.TabLayoutMediator
 import com.example.abl.databinding.FragmentLeadersBinding
+import com.example.abl.leaders.LeadersFragment.Companion.LEADER_TYPE_KEY
 import java.lang.IndexOutOfBoundsException
 
 const val BATTING_LEADERS_FRAGMENT_INDEX = 0
@@ -48,6 +49,10 @@ class LeadersFragment : Fragment() {
             }.attach()
         }
     }
+
+    companion object {
+        const val LEADER_TYPE_KEY = "leaderType"
+    }
 }
 
 class LeadersListAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
@@ -61,7 +66,12 @@ class LeadersListAdapter(fragment: Fragment) : FragmentStateAdapter(fragment) {
 
     override fun createFragment(position: Int): Fragment =
         leaderTypeMap[position]?.let { leaderType ->
-            LeadersListFragment(leaderType)
+            //LeadersListFragment(leaderType)
+            LeadersListFragment().apply {
+                arguments = Bundle().apply {
+                    putSerializable(LEADER_TYPE_KEY, leaderType)
+                }
+            }
         } ?: throw IndexOutOfBoundsException()
 }
 
