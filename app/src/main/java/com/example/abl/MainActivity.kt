@@ -11,6 +11,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.example.abl.databinding.ActivityMainBinding
 import com.example.abl.settings.SettingsFragment
+import com.example.abl.settings.getSelectedStartingScreen
 import com.example.abl.teams.UITeam
 
 class MainActivity : AppCompatActivity() {
@@ -22,15 +23,23 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         val binding = ActivityMainBinding.inflate(layoutInflater)
+
+        setContentView(binding.root)
+        setSupportActionBar(binding.toolbar)
+
         val prefs = PreferenceManager.getDefaultSharedPreferences(this)
         val navHostFragment = supportFragmentManager
             .findFragmentById(R.id.containerFragment) as NavHostFragment
 
         this.navController = navHostFragment.navController
-        setContentView(binding.root)
-        setSupportActionBar(binding.toolbar)
+
+        val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
+
+        navGraph.startDestination = getSelectedStartingScreen(prefs)
+        navController.graph = navGraph
 
         binding.navView.setupWithNavController(this.navController)
+
         this.appBarConfiguration =
             AppBarConfiguration(binding.navView.menu, binding.drawerLayout)
         setupActionBarWithNavController(this.navController, appBarConfiguration)

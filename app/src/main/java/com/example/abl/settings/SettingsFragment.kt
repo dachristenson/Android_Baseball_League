@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.util.TypedValue
 import androidx.core.content.ContextCompat
 import androidx.preference.DropDownPreference
+import androidx.preference.EditTextPreference
 import androidx.preference.ListPreference
 import androidx.preference.Preference
 import androidx.preference.PreferenceFragmentCompat
@@ -16,10 +17,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
     private lateinit var favoriteTeamPreference: DropDownPreference
     private lateinit var favoriteTeamColorPreference: SwitchPreferenceCompat
+    private lateinit var usernamePreference: EditTextPreference
+    private lateinit var startingScreenPreference: DropDownPreference
 
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         val ctx = preferenceManager.context
         val screen = preferenceManager.createPreferenceScreen(ctx)
+
+        this.usernamePreference = EditTextPreference(ctx).apply {
+            key = usernamePreferenceKey
+            title = getString(R.string.user_name)
+            summaryProvider = EditTextPreference.SimpleSummaryProvider.getInstance()
+        }
+
+        screen.addPreference(usernamePreference)
 
         this.favoriteTeamPreference = DropDownPreference(ctx).apply {
             key = favoriteTeamPreferenceKey
@@ -72,6 +83,17 @@ class SettingsFragment : PreferenceFragmentCompat() {
 
         screen.addPreference(favoriteTeamColorPreference)
 
+        this.startingScreenPreference = DropDownPreference(ctx).apply {
+            key = startingScreenPreferenceKey
+            title = getString(R.string.starting_location)
+            entries = startingScreens.keys.toTypedArray()
+            entryValues = startingScreens.keys.toTypedArray()
+            summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
+            setDefaultValue(R.id.scoreboardFragment.toString())
+        }
+
+        screen.addPreference(startingScreenPreference)
+
         preferenceScreen = screen
     }
 
@@ -108,5 +130,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
     companion object {
         const val favoriteTeamPreferenceKey = "favoriteTeam"
         const val favoriteTeamColorsPreferenceKey = "useFavoriteTeamColors"
+        const val usernamePreferenceKey = "username"
+        const val startingScreenPreferenceKey = "startingScreen"
     }
 }
