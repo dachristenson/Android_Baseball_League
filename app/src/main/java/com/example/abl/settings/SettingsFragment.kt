@@ -1,15 +1,14 @@
 package com.example.abl.settings
 
 import android.os.Bundle
+import android.util.Log
 import android.util.TypedValue
 import androidx.core.content.ContextCompat
-import androidx.preference.DropDownPreference
-import androidx.preference.EditTextPreference
-import androidx.preference.ListPreference
-import androidx.preference.Preference
-import androidx.preference.PreferenceFragmentCompat
-import androidx.preference.SwitchPreferenceCompat
+import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
+import androidx.preference.*
 import com.example.abl.R
+import dev.mfazio.abl.api.services.getDefaultABLService
 import com.example.abl.teams.UITeam
 import kotlinx.coroutines.launch
 
@@ -90,9 +89,47 @@ class SettingsFragment : PreferenceFragmentCompat() {
             entryValues = startingScreens.keys.toTypedArray()
             summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
             setDefaultValue(R.id.scoreboardFragment.toString())
+
+            /*onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+                saveSettings(startingScreen = newValue?.toString())
+                true
+            }*/
         }
 
         screen.addPreference(startingScreenPreference)
+
+        val aboutCategory = PreferenceCategory(ctx).apply {
+            key = aboutPreferenceCategoryKey
+            title = getString(R.string.about)
+        }
+
+        screen.addPreference(aboutCategory)
+
+        val aboutTheAppPreference = Preference(ctx).apply {
+            key = aboutTheAppPreferenceKey
+            title = getString(R.string.about_the_app)
+            summary = getString(R.string.info_about_the_app)
+            onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                this@SettingsFragment.findNavController().navigate(
+                    R.id.aboutTheAppFragment
+                )
+                true
+            }
+        }
+        aboutCategory.addPreference(aboutTheAppPreference)
+
+        val creditsPreference = Preference(ctx).apply {
+            key = creditsPreferenceKey
+            title = getString(R.string.credits)
+            summary = getString(R.string.image_credits)
+            onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                this@SettingsFragment.findNavController().navigate(
+                    R.id.imageCreditsFragment
+                )
+                true
+            }
+        }
+        aboutCategory.addPreference(creditsPreference)
 
         preferenceScreen = screen
     }
@@ -128,6 +165,9 @@ class SettingsFragment : PreferenceFragmentCompat() {
     }
 
     companion object {
+        const val aboutPreferenceCategoryKey = "aboutCategory"
+        const val aboutTheAppPreferenceKey = "aboutTheApp"
+        const val creditsPreferenceKey = "credits"
         const val favoriteTeamPreferenceKey = "favoriteTeam"
         const val favoriteTeamColorsPreferenceKey = "useFavoriteTeamColors"
         const val usernamePreferenceKey = "username"

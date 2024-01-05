@@ -37,6 +37,18 @@
     </action>
 
     <fragment
+        android:id="@+id/aboutTheAppFragment"
+        android:name="com.example.abl.settings.AboutTheAppFragment"
+        android:label="@string/about_the_app"
+        tools:layout="@layout/fragment_about_the_app" />
+
+    <fragment
+        android:id="@+id/imageCreditsFragment"
+        android:name="com.example.abl.settings.ImageCreditsFragment"
+        android:label="@string/image_credits"
+        tools:layout="@layout/fragment_image_credits" />
+
+    <fragment
         android:id="@+id/playersFragment"
         android:name="com.example.abl.players.PlayersFragment"
         android:label="@string/players">

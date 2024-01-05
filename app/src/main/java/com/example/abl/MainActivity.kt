@@ -35,7 +35,8 @@ class MainActivity : AppCompatActivity() {
 
         val navGraph = navController.navInflater.inflate(R.navigation.nav_graph)
 
-        navGraph.startDestination = getSelectedStartingScreen(prefs)
+        //navGraph.startDestination = getSelectedStartingScreen(prefs)
+        navGraph.setStartDestination(getSelectedStartingScreen(prefs))
         navController.graph = navGraph
 
         binding.navView.setupWithNavController(this.navController)
