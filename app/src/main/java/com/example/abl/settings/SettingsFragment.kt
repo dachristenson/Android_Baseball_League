@@ -7,6 +7,9 @@ import androidx.core.content.ContextCompat
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import androidx.preference.*
+import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.example.abl.R
 import dev.mfazio.abl.api.services.getDefaultABLService
 import com.example.abl.teams.UITeam
@@ -27,6 +30,13 @@ class SettingsFragment : PreferenceFragmentCompat() {
             key = usernamePreferenceKey
             title = getString(R.string.user_name)
             summaryProvider = EditTextPreference.SimpleSummaryProvider.getInstance()
+
+            onPreferenceChangeListener =
+                Preference.OnPreferenceChangeListener { _, newValue ->
+                    loadSettings(newValue?.toString())
+
+                    true
+                }
         }
 
         screen.addPreference(usernamePreference)
@@ -60,6 +70,8 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     favoriteTeamPreference.icon = getIconForTeam(teamId)
                 }
 
+                saveSettings(favoriteTeam = teamId)
+
                 true
             }
 
@@ -75,7 +87,7 @@ class SettingsFragment : PreferenceFragmentCompat() {
                     } else null
                 )
 
-                //saveSettings(useFavoriteTeamColor = useFavoriteTeamColor)
+                saveSettings(useFavoriteTeamColor = useFavoriteTeamColor)
 
                 true
             }
@@ -90,10 +102,10 @@ class SettingsFragment : PreferenceFragmentCompat() {
             summaryProvider = ListPreference.SimpleSummaryProvider.getInstance()
             setDefaultValue(R.id.scoreboardFragment.toString())
 
-            /*onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
+            onPreferenceChangeListener = Preference.OnPreferenceChangeListener { _, newValue ->
                 saveSettings(startingScreen = newValue?.toString())
                 true
-            }*/
+            }
         }
 
         screen.addPreference(startingScreenPreference)
@@ -164,7 +176,63 @@ class SettingsFragment : PreferenceFragmentCompat() {
         return colorValue.data
     }
 
+    private fun saveSettings(
+        userName: String? = usernamePreference.text,
+        favoriteTeam: String? = favoriteTeamPreference.value,
+        useFavoriteTeamColor: Boolean? = favoriteTeamColorPreference.isChecked,
+        startingScreen: String? = startingScreenPreference.value
+    ) {
+        if (userName != null) {
+            WorkManager.getInstance(requireContext()).enqueue(
+                OneTimeWorkRequestBuilder<SaveSettingsWorker>()
+                    .setInputData(
+                        workDataOf(
+                            SaveSettingsWorker.userNameKey to userName,
+                            SaveSettingsWorker.favoriteTeamKey to favoriteTeam,
+                            SaveSettingsWorker.favoriteTeamColorCheckKey to useFavoriteTeamColor,
+                            SaveSettingsWorker.startingScreenKey to startingScreen
+                        )
+                    ).build()
+            )
+        }
+    }
+
+    private fun loadSettings(userName: String? = null) {
+        if (userName != null) {
+            viewLifecycleOwner.lifecycleScope.launch {
+                try {
+                    val apiResult = getDefaultABLService().getAppSettingsForUser(userName)
+
+                    with(favoriteTeamPreference) {
+                        value = apiResult.favoriteTeamId
+                        icon = getIconForTeam(apiResult.favoriteTeamId)
+                    }
+
+                    setNavBarColorForTeam(
+                        if (apiResult.useTeamColorNavBar) {
+                            apiResult.favoriteTeamId
+                        } else null
+                    )
+
+                    favoriteTeamColorPreference.isChecked = apiResult.useTeamColorNavBar
+
+                    startingScreenPreference.value = apiResult.startingLocation
+
+                } catch (ex: Exception) {
+                    Log.i(
+                        TAG,
+                        """Settings not found.
+                          |This may just mean they haven't been initialized yet.
+                          |""".trimMargin()
+                    )
+                    saveSettings(userName)
+                }
+            }
+        }
+    }
+
     companion object {
+        const val TAG = "SettingsFragment"
         const val aboutPreferenceCategoryKey = "aboutCategory"
         const val aboutTheAppPreferenceKey = "aboutTheApp"
         const val creditsPreferenceKey = "credits"
