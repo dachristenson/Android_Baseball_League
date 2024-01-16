@@ -17,7 +17,7 @@
     <string name="last_ten_abbr">L10</string>
     <string name="streak_abbr">STRK</string>
     <string name="view_roster">View Roster</string>
-    <string name="in_abl"> in ABL </string>
+    <string name="in_abl">in ABL</string>
     <string name="network_exception_message">A network error has occurred. Please check your connection and try again.</string>
     <string name="request_exception_message">The API request was invalid. Please try again.</string>
     <string name="general_exception_message">An error occurred retrieving data. Please try again.</string>
@@ -42,4 +42,19 @@
     <string name="info_about_the_app">Information about the app</string>
     <string name="credits">Credits</string>
     <string name="about">About</string>
+    <string name="notifications">Notifications</string>
+    <string name="default_notification_channel_id">ablNotificationsDefault</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="pke_notification_long_text">The Pewaukee Princesses are the brainchild of Hazel Fazio. She came up with the nickname, selected the logo, and chose to include her cousins on the team. Oh, and her \"Oddfather\" at catcher.</string>
+    <string name="notification_destination_player">player</string>
+    <string name="notification_destination_team">team</string>
+    <string name="generic_push_title">Push - %1$s</string>
+    <string name="generic_push_description">This is a notification from the ABLFirebaseMessaging Service focusing on %1$s.</string>
+    <string name="share">Share</string>
+    <string name="lopez_notification_title">Rolando Lopez!</string>
+    <string name="lopez_notification_text">Click this notification to go to Rolando\'s player page.</string>
+    <string name="pke_notification_title">The Legendary Pewaukee Princesses</string>
+    <string name="pke_notification_short_text">Click to go to the Princesses\' team page.</string>
+    <string name="scoreboard_notification_title">Games are Happening Today</string>
+    <string name="scoreboard_notification_text">See the scoreboard or check current standings</string>
 </resources>

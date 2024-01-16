@@ -49,6 +49,12 @@
         tools:layout="@layout/fragment_image_credits" />
 
     <fragment
+        android:id="@+id/notificationsFragment"
+        android:name="com.example.abl.notifications.NotificationsFragment"
+        android:label="@string/notifications"
+        tools:layout="@layout/fragment_notifications" />
+
+    <fragment
         android:id="@+id/playersFragment"
         android:name="com.example.abl.players.PlayersFragment"
         android:label="@string/players">

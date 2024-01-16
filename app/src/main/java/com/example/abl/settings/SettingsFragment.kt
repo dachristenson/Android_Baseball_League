@@ -143,6 +143,20 @@ class SettingsFragment : PreferenceFragmentCompat() {
         }
         aboutCategory.addPreference(creditsPreference)
 
+        val notificationsPreference = Preference(ctx).apply {
+            key = notificationsPreferenceKey
+            title = "Notifications"
+            summary = "Links to display push and local notifications"
+            onPreferenceClickListener = Preference.OnPreferenceClickListener {
+                this@SettingsFragment.findNavController().navigate(
+                    R.id.notificationsFragment
+                )
+                true
+            }
+        }
+
+        aboutCategory.addPreference(notificationsPreference)
+
         preferenceScreen = screen
     }
 
@@ -240,5 +254,6 @@ class SettingsFragment : PreferenceFragmentCompat() {
         const val favoriteTeamColorsPreferenceKey = "useFavoriteTeamColors"
         const val usernamePreferenceKey = "username"
         const val startingScreenPreferenceKey = "startingScreen"
+        const val notificationsPreferenceKey = "notifications"
     }
 }
