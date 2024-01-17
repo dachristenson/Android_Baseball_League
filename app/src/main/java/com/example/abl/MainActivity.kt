@@ -1,5 +1,9 @@
 package com.example.abl
 
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.content.Context
+import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.navigation.NavController
@@ -10,6 +14,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.example.abl.databinding.ActivityMainBinding
+import com.example.abl.notifications.ABLNotificationChannel
 import com.example.abl.settings.SettingsFragment
 import com.example.abl.settings.getSelectedStartingScreen
 import com.example.abl.teams.UITeam
@@ -53,10 +58,29 @@ class MainActivity : AppCompatActivity() {
                 window.navigationBarColor = it
             }
         }
+
+        createNotificationChannels()
     }
 
     override fun onSupportNavigateUp(): Boolean =
         (this::navController.isInitialized &&
                 this.navController.navigateUp(this.appBarConfiguration)
                 ) || super.onSupportNavigateUp()
+
+    private fun createNotificationChannels() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val channels = ABLNotificationChannel.values().map { channel ->
+                NotificationChannel(
+                    channel.channelId,
+                    channel.channelName,
+                    channel.importance
+                ).apply {
+                    description = channel.channelDescription
+                }
+            }
+
+            (getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager)
+                .createNotificationChannels(channels)
+        }
+    }
 }

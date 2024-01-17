@@ -49,6 +49,12 @@
         tools:layout="@layout/fragment_image_credits" />
 
     <fragment
+        android:id="@+id/leadersFragment"
+        android:name="com.example.abl.leaders.LeadersFragment"
+        android:label="@string/leaders"
+        tools:layout="@layout/fragment_leaders" />
+
+    <fragment
         android:id="@+id/notificationsFragment"
         android:name="com.example.abl.notifications.NotificationsFragment"
         android:label="@string/notifications"
@@ -65,12 +71,6 @@
             app:argType="string"
             app:nullable="true" />
     </fragment>
-
-    <fragment
-        android:id="@+id/leadersFragment"
-        android:name="com.example.abl.leaders.LeadersFragment"
-        android:label="@string/leaders"
-        tools:layout="@layout/fragment_leaders" />
 
     <fragment
         android:id="@+id/singlePlayerFragment"
