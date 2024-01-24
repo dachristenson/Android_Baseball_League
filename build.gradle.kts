@@ -8,7 +8,7 @@ plugins {
 buildscript {
     val kotlin_version = "1.9.0"
     val gradle_version = "8.1.2"
-    val nav_version = "2.7.4"
+    val nav_version = "2.7.6"
 
     /*
     repositories {
@@ -21,6 +21,7 @@ buildscript {
         classpath("com.android.tools.build:gradle:$gradle_version")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
         classpath("androidx.navigation:navigation-safe-args-gradle-plugin:$nav_version")
+        classpath("com.google.gms:google-services:4.4.0")
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
