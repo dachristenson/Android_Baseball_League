@@ -16,6 +16,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.abl.R
 import dev.mfazio.abl.api.services.getDefaultABLService
 import com.example.abl.databinding.FragmentNotificationsBinding
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 class NotificationsFragment : Fragment() {
     override fun onCreateView(
@@ -40,6 +42,28 @@ class NotificationsFragment : Fragment() {
     companion object {
         private val ablService = getDefaultABLService()
         private const val TAG = "NotificationsFragment"
+
+        private fun getTokenAndSendRequest(
+            coroutineScope: CoroutineScope,
+            request: suspend (token: String) -> Unit
+        ) {
+            FirebaseMessaging.getInstance().token.addOnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(
+                        TAG,
+                        "Fetching FCM registration token failed.",
+                        task.exception
+                    )
+                    return@addOnCompleteListener
+                }
+
+                val token = task.result ?: "N/A"
+
+                coroutineScope.launch {
+                    request(token)
+                }
+            }
+        }
 
         private val notificationItems = listOf<NotificationItem>(
             NotificationItem(
@@ -145,6 +169,61 @@ class NotificationsFragment : Fragment() {
                     3, //This ID can be used to update/remove an existing notification
                     notification
                 )
+            },
+            NotificationItem(
+                4,
+                "Push - Player",
+                "Requests a push notification from the server for Juan Pablo Siller. " +
+                        "If the app is still open when received, it will display a dialog. " +
+                        "If the app is closed, it will display a notification.",
+                NotificationType.Push
+            ) { _, coroutineScope ->
+                getTokenAndSendRequest(coroutineScope) { token ->
+                    ablService.sendNotificationToPhone(
+                        NotificationTypeApiModel.Player,
+                        token,
+                        "sillejua",
+                        false
+                    )
+                }
+            },
+            NotificationItem(
+                5,
+                "Push - Team (Delayed)",
+                "Requests a push notification (after a small delay) " +
+                        "from the server for the Waukesha Riffs. " +
+                        "The delay exists to allow for minimizing of the app " +
+                        "in order to get the notification in the status bar.",
+                NotificationType.Push
+            ) { _, coroutineScope ->
+                getTokenAndSendRequest(coroutineScope) { token ->
+                    delay(3000)
+                    ablService.sendNotificationToPhone(
+                        NotificationTypeApiModel.Team,
+                        token,
+                        "WAU",
+                        false
+                    )
+                }
+            },
+            NotificationItem(
+                6,
+                "Push - Player (Delayed, Data)",
+                "Requests a push notification (after a small delay) " +
+                        "from the server for Hazel Fazio. " +
+                        "This is a \"data-only\" push notification, " +
+                        "meaning the onMessageReceived(...) function will always be used.",
+                NotificationType.Push
+            ) { _, coroutineScope ->
+                getTokenAndSendRequest(coroutineScope) { token ->
+                    delay(3000)
+                    ablService.sendNotificationToPhone(
+                        NotificationTypeApiModel.Player,
+                        token,
+                        "faziohaz",
+                        true
+                    )
+                }
             }
         )
     }

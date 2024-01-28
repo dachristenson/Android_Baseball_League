@@ -15,7 +15,47 @@ class ABLFirebaseMessagingService : FirebaseMessagingService() {
     }
 
     override fun onMessageReceived(message: RemoteMessage) {
-        TODO()
+        baseContext?.let { ctx ->
+            createNotificationConfig(ctx, message)?.let { config ->
+                val pendingIntent = NavDeepLinkBuilder(ctx)
+                    .setGraph(R.navigation.nav_graph)
+                    .setDestination(config.destinationId)
+                    .setArguments(Bundle().apply {
+                        config.arguments.forEach { (key, value) ->
+                            putString(key, value)
+                        }
+                    }).createPendingIntent()
+
+                val notification =
+                    NotificationCompat.Builder(ctx, config.channel.channelId)
+                        .setContentTitle(
+                            ctx.getString(
+                                R.string.generic_push_title,
+                                config.titleInput
+                            )
+                        )
+                        .setContentText(
+                            ctx.getString(
+                                R.string.generic_push_description,
+                                config.textInput
+                            )
+                        )
+                        .setStyle(
+                            NotificationCompat.BigTextStyle().bigText(
+                                ctx.getString(
+                                    R.string.generic_push_description,
+                                    config.textInput
+                                )
+                            )
+                        )
+                        .setSmallIcon(config.smallIconId)
+                        .setContentIntent(pendingIntent)
+                        .setAutoCancel(true)
+                        .build()
+
+                NotificationManagerCompat.from(ctx).notify(config.id, notification)
+            }
+        }
     }
 
     private fun createNotificationConfig(
