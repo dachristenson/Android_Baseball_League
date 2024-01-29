@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:479866297707:android:cdbdf2d1142fa298cec02e",
         "android_client_info": {
-          "package_name": "dev.mfazio.abl"
+          "package_name": "com.example.abl"
         }
       },
       "oauth_client": [
