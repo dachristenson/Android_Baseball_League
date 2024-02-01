@@ -103,16 +103,28 @@
 
         <Button
             android:id="@+id/teamViewRoster"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:text="@string/view_roster"
             android:backgroundTint="@{vm.team.primaryColorId}"
             android:onClick="@{viewRosterButtonClickListener}"
+            android:text="@string/view_roster"
             app:icon="@drawable/ic_baseline_directions_run_24"
+            app:layout_constraintEnd_toStartOf="@id/teamShareTeam"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/teamDivisionStandings"/>
+            app:layout_constraintTop_toBottomOf="@id/teamDivisionStandings" />
+
+        <Button
+            android:id="@+id/teamShareTeam"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            android:onClick="@{vm.shareTeam}"
+            android:text="@string/share"
+            app:icon="@drawable/ic_baseline_share_24"
+            app:layout_constraintTop_toBottomOf="@id/teamDivisionStandings"
+            app:layout_constraintStart_toEndOf="@id/teamViewRoster"
+            app:layout_constraintEnd_toEndOf="parent"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

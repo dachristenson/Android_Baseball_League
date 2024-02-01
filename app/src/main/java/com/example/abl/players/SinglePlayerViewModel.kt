@@ -1,6 +1,8 @@
 package com.example.abl.players
 
 import android.app.Application
+import android.content.Intent
+import android.view.View
 import androidx.lifecycle.*
 import com.example.abl.data.BaseballDatabase
 import com.example.abl.data.BaseballRepository
@@ -8,6 +10,7 @@ import com.example.abl.util.getErrorMessage
 import com.example.abl.util.toBattingPercentageString
 import com.example.abl.util.toERAString
 import kotlinx.coroutines.launch
+import java.net.URLEncoder
 
 class SinglePlayerViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -46,6 +49,26 @@ class SinglePlayerViewModel(application: Application) : AndroidViewModel(applica
         viewModelScope.launch {
             repo.updatePlayer(playerId).getErrorMessage(getApplication())
                 ?.let { message -> errorMessage.value = message }
+        }
+    }
+
+    fun sharePlayer(view: View) {
+        playerWithStats.value?.player?.let { player ->
+            val encodedPlayerName = URLEncoder.encode(player.fullName, "UTF-8")
+            val sendIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    "https://link.mfazio.dev/players/${player.playerId}" +
+                            "?playerName=$encodedPlayerName"
+                )
+                type = "text/plain"
+            }
+
+            val shareIntent =
+                Intent.createChooser(sendIntent, "Share ${player.fullName}")
+
+            view.context.startActivity(shareIntent)
         }
     }
 

@@ -1,8 +1,11 @@
 package com.example.abl.teams
 
+import android.content.Intent
+import android.view.View
 import androidx.lifecycle.*
 import com.example.abl.standings.TeamStanding
 import com.example.abl.standings.UITeamStanding
+import java.net.URLEncoder
 
 class SingleTeamViewModel : ViewModel() {
 
@@ -29,6 +32,26 @@ class SingleTeamViewModel : ViewModel() {
     fun setTeam(teamId: String) {
         UITeam.allTeams.firstOrNull { it.teamId == teamId }?.let { team ->
             this.team.value = team
+        }
+    }
+
+    fun shareTeam(view: View) {
+        team.value?.let { team ->
+            val encodedTeamName = URLEncoder.encode(team.teamName, "UTF-8")
+            val sendIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(
+                    Intent.EXTRA_TEXT,
+                    "https://link.mfazio.dev/teams/${team.teamId}" +
+                            "?teamName=$encodedTeamName"
+                )
+                type = "text/plain"
+            }
+
+            val shareIntent =
+                Intent.createChooser(sendIntent, "Share ${team.teamName}")
+
+            view.context.startActivity(shareIntent)
         }
     }
 
